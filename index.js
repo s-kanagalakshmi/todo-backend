@@ -1,22 +1,24 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
+require("dotenv").config();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
 app.use(cors())
 app.use(express.json())
 const mongoose = require('mongoose');
 //Database connection
-mongoose.connect("mongodb+srv://kanagalakshmimca16:EXyXoHq2joi1VGBF@todolist-cluster.9kwsquz.mongodb.net/todolist?retryWrites=true&w=majority&appName=todolist-cluster")
-.then(() => { console.log("Database connected") })
-    .catch(() => {
-        console.log("Database not connected")
-    })
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log("Connection error", err));
+
 // const inputArray=["Apple","Banana"]
 //Model creation
 const fruitlist = mongoose.model("list", { name: String }, "fruit")
 
-app.listen(3000, () => {
-    console.log("Server started")
-})
 app.get("/", (req, res) => {
     res.send("DB started")
 })
